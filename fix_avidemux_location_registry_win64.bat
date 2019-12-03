@@ -4,7 +4,7 @@ title Fix Avidemux location open with (auto)
 
 :check_permissions
 net session >nul 2>&1
-if not %errorLevel% == 0 echo Error: Must run as administrator. & pause>nul & goto :eof
+if not %errorLevel% == 0 echo   & echo Error: Must run as administrator. & pause>nul & goto :eof
 
 :: find installation path
 cd /d %programfiles%

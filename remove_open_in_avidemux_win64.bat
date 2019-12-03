@@ -6,7 +6,7 @@ set allvideo=avi,asf,wmv,wma,flv,mkv,mpg,mpeg,ts,mp4,nuv,ogm,mov,mts,m2ts,3gp,vo
 
 :check_permissions
 net session >nul 2>&1
-if not %errorLevel% == 0 echo Error: Must run as administrator. & pause>nul & goto :eof
+if not %errorLevel% == 0 echo   & echo Error: Must run as administrator. & pause>nul & goto :eof
 
 :: ask extensions
 echo.
