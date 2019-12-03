@@ -16,7 +16,7 @@ echo NO " quotes and no \ at the end
 echo.
 set /p installpath="Enter your avidemux folder "
 if "%installpath%"=="" goto :askfolder
-if not exist %installpath%\avidemux.exe echo Error: can't find %installpath%\avidemux.exe & goto :askfolder
+if not exist "%installpath%\avidemux.exe" echo Error: can't find "%installpath%\avidemux.exe" & goto :askfolder
 
 :askextensions
 echo.

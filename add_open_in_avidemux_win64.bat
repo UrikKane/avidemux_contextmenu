@@ -11,9 +11,9 @@ if not %errorLevel% == 0 echo Error: Must run as administrator. & pause>nul & go
 :: find installation path
 cd /d %programfiles%
 for /f "tokens=*" %%F in ('dir /b /a:d /o:-n ^|find /i "avidemux"') do (
-	if exist %%F\avidemux.exe (
-	set "installpath=%programfiles%\%%F"
-	echo Found Avidemux folder %programfiles%\%%F
+	if exist "%%~F\avidemux.exe" (
+	set "installpath=%programfiles%\%%~F"
+	echo Found Avidemux folder %programfiles%\%%~F
 	goto :askextensions
 	)
 )
