@@ -22,17 +22,18 @@ if not exist "%installpath%\avidemux.exe" echo Error: can't find "%installpath%\
 
 :askextensions
 echo.
-echo example: mp4,avi,mkv (divide by comma, no dots)
+echo example: mp4,avi,mkv (lowercase, divide by comma, no dots)
 echo or just press enter for default
 set /p extensions="What extensions to add for (default %default_extensions%): "
-for %%A in (%extensions%) do (
+if not "!extensions!"=="" (
 	set "extensions=!extensions: =!"
-	set "extensions=!extensions:.=!"
-	goto :next
-)
-set "extensions=%default_extensions%"
+	for /f "tokens=1 delims=abcdefghijklmnopqrstuvwxyz1234567890," %%A in ('echo !extensions!') do (
+		set "extensions=%default_extensions%"
+		echo Warning: input incorrect, will use default setting ^(%default_extensions%^)
+		pause
+	)
+) else ( set "extensions=%default_extensions%" )
 
-:next
 :: exec for all extensions
 for %%E in (%extensions%) do CALL :SetKeys %%E
 

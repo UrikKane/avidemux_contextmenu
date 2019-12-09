@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 title Remove Avidemux context menu entry
 
-set allvideo=avi,asf,wmv,wma,flv,mkv,mpg,mpeg,ts,mp4,nuv,ogm,mov,mts,m2ts,3gp,vob,webm
+set default_extensions=avi,asf,wmv,wma,flv,mkv,mpg,mpeg,ts,mp4,nuv,ogm,mov,mts,m2ts,3gp,vob,webm
 
 :check_permissions
 net session >nul 2>&1
@@ -10,18 +10,19 @@ if not %errorLevel% == 0 echo   & echo Error: Must run as administrator. & paus
 
 :: ask extensions
 echo.
-echo example: mp4,avi,mkv (divide by comma, no dots)
+echo example: mp4,avi,mkv (lowercase, divide by comma, no dots)
 echo or just press enter for default
 echo.
 set /p extensions="What extensions to delete for (default ALL): "
-for %%A in (%extensions%) do (
+if not "!extensions!"=="" (
 	set "extensions=!extensions: =!"
-	set "extensions=!extensions:.=!"
-	goto :next
-)
-set "extensions=%allvideo%"
+	for /f "tokens=1 delims=abcdefghijklmnopqrstuvwxyz1234567890," %%A in ('echo !extensions!') do (
+		set "extensions=%default_extensions%"
+		echo Warning: input incorrect, will use default setting ^(%default_extensions%^)
+		pause
+	)
+) else ( set "extensions=%default_extensions%" )
 
-:next
 :: exec for all extensions
 for %%E in (%extensions%) do CALL :DelKey %%E
 
