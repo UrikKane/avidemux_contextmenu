@@ -15,7 +15,9 @@ echo example: C:\my programs\avidemux_64
 echo NO " quotes and no \ at the end
 echo.
 set /p installpath="Enter your avidemux folder "
-if "%installpath%"=="" goto :askfolder
+for %%A in (%installpath%) do goto :next
+goto :askfolder
+:next
 if not exist "%installpath%\avidemux.exe" echo Error: can't find "%installpath%\avidemux.exe" & goto :askfolder
 
 :askextensions
@@ -23,8 +25,14 @@ echo.
 echo example: mp4,avi,mkv (divide by comma, no dots)
 echo or just press enter for default
 set /p extensions="What extensions to add for (default %default_extensions%): "
-if "%extensions%"=="" set "extensions=%default_extensions%"
+for %%A in (%extensions%) do (
+	set "extensions=!extensions: =!"
+	set "extensions=!extensions:.=!"
+	goto :next
+)
+set "extensions=%default_extensions%"
 
+:next
 :: exec for all extensions
 for %%E in (%extensions%) do CALL :SetKeys %%E
 

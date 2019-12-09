@@ -25,8 +25,14 @@ echo example: mp4,avi,mkv (divide by comma, no dots)
 echo or just press enter for default
 echo.
 set /p extensions="What extensions to add for (default %default_extensions%): "
-if "%extensions%"=="" set "extensions=%default_extensions%"
+for %%A in (%extensions%) do (
+	set "extensions=!extensions: =!"
+	set "extensions=!extensions:.=!"
+	goto :next
+)
+set "extensions=%default_extensions%"
 
+:next
 :: exec for all extensions
 for %%E in (%extensions%) do CALL :SetKeys %%E
 

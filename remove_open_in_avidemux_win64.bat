@@ -14,8 +14,14 @@ echo example: mp4,avi,mkv (divide by comma, no dots)
 echo or just press enter for default
 echo.
 set /p extensions="What extensions to delete for (default ALL): "
-if "%extensions%"=="" set "extensions=%allvideo%"
+for %%A in (%extensions%) do (
+	set "extensions=!extensions: =!"
+	set "extensions=!extensions:.=!"
+	goto :next
+)
+set "extensions=%allvideo%"
 
+:next
 :: exec for all extensions
 for %%E in (%extensions%) do CALL :DelKey %%E
 
