@@ -1,6 +1,11 @@
 # avidemux_contextmenu
 avidemux context menu scripts
 
+TL;DR: if you have regular Avidemux version installed to C:\Program files , use 
+add_open_in_avidemux_win64.bat to add and
+remove_open_in_avidemux_win64.bat to delete context menu entries.
+
+
 add_open_in_avidemux_win64 - finds latest avidemux folder (reverse alphabetical order) in C:\Program Files and adds "open in Avidemux"
 context menu entry for given extensions (asks user input for extensions, or uses default list)
 
