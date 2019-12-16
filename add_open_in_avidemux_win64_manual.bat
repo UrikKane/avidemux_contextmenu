@@ -18,7 +18,10 @@ set /p installpath="Enter your avidemux folder "
 for %%A in (%installpath%) do goto :next
 goto :askfolder
 :next
-if not exist "%installpath%\avidemux.exe" echo Error: can't find "%installpath%\avidemux.exe" & goto :askfolder
+for %%A in (avidemux.exe,avidemux_portable.exe) do ( if exist "%installpath%\%%A" echo Found Avidemux: "%installpath%\%%A" & goto :askextensions)
+echo Error: Could not find Avidemux executable in given folder
+goto :askfolder
+
 
 :askextensions
 echo.
@@ -48,8 +51,8 @@ pause & goto :eof
 
 :SetKeys
 reg add "HKCR\SystemFileAssociations\.%1\shell\AviDemux.open" /f /v "" /t REG_SZ /d "Open in Avidemux"
-reg add "HKCR\SystemFileAssociations\.%1\shell\AviDemux.open" /f /v "Icon" /t REG_SZ /d "\"%installpath%\avidemux.exe\",0"
-reg add "HKCR\SystemFileAssociations\.%1\shell\AviDemux.open\command" /f /v "" /t REG_SZ /d "\"%installpath%\avidemux.exe\" \"%%1\""
+reg add "HKCR\SystemFileAssociations\.%1\shell\AviDemux.open" /f /v "Icon" /t REG_SZ /d "\"%installpath%\",0"
+reg add "HKCR\SystemFileAssociations\.%1\shell\AviDemux.open\command" /f /v "" /t REG_SZ /d "\"%installpath%\" \"%%1\""
 if !errorlevel!==0 CALL :LogFileType %1
 goto :eof
 
