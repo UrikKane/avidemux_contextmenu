@@ -2,31 +2,40 @@
 setlocal enabledelayedexpansion
 title Add Avidemux context menu entry (manual)
 
-set default_extensions=mp4,mts,m2ts,mkv
+set default_extensions=mp4,mov,mts,m2ts,mkv
 
 :check_permissions
 net session >nul 2>&1
 if not %errorLevel% == 0 echo   & echo Error: Must run as administrator. & pause>nul & goto :eof
 
+:hintfolder
+echo Please enter Avidemux folder, for example C:\Program Files\Avidemux 2.7
+echo.
 :askfolder
 set installpath=
-echo.
-echo example: C:\my programs\avidemux_64
-echo NO " quotes and no \ at the end
 echo.
 set /p installpath="Enter your avidemux folder "
 for %%A in (%installpath%) do goto :next
 goto :askfolder
 :next
-for %%A in (avidemux.exe,avidemux_portable.exe) do ( if exist "%installpath%\%%A" echo Found Avidemux: "%installpath%\%%A" & goto :askextensions)
+set installpath=%installpath:"=%
+if "%installpath:~-1%"=="\" set "installpath=%installpath:~0,-1%"
+if "%installpath:~-1%"=="/" set "installpath=%installpath:~0,-1%"
+for %%A in (avidemux.exe,avidemux_portable.exe) do ( 
+	if exist "%installpath%\%%A" (
+		set "installpath=%installpath%\%%A"
+		echo. & echo Selected Avidemux: "!installpath!"
+		goto :hintextensions
+	)
+)
 echo Error: Could not find Avidemux executable in given folder
 goto :askfolder
 
-
-:askextensions
+:hintextensions
 echo.
-echo example: mp4,avi,mkv (lowercase, divide by comma, no dots)
-echo or just press enter for default
+echo Please enter file extensions to add, for example: mp4,avi,mkv (lowercase, divide by comma, no dots), or just press enter for default list
+echo.
+:askextensions
 set /p extensions="What extensions to add for (default %default_extensions%): "
 if not "!extensions!"=="" (
 	set "extensions=!extensions: =!"
@@ -50,9 +59,9 @@ pause & goto :eof
 
 
 :SetKeys
-reg add "HKCR\SystemFileAssociations\.%1\shell\AviDemux.open" /f /v "" /t REG_SZ /d "Open in Avidemux"
-reg add "HKCR\SystemFileAssociations\.%1\shell\AviDemux.open" /f /v "Icon" /t REG_SZ /d "\"%installpath%\",0"
-reg add "HKCR\SystemFileAssociations\.%1\shell\AviDemux.open\command" /f /v "" /t REG_SZ /d "\"%installpath%\" \"%%1\""
+reg add "HKCR\SystemFileAssociations\.%1\shell\AviDemux.open" /f /v "" /t REG_SZ /d "Open in Avidemux">nul 2>&1
+reg add "HKCR\SystemFileAssociations\.%1\shell\AviDemux.open" /f /v "Icon" /t REG_SZ /d "\"%installpath%\",0">nul 2>&1
+reg add "HKCR\SystemFileAssociations\.%1\shell\AviDemux.open\command" /f /v "" /t REG_SZ /d "\"%installpath%\" \"%%1\"">nul 2>&1
 if !errorlevel!==0 CALL :LogFileType %1
 goto :eof
 

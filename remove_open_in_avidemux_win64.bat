@@ -8,11 +8,11 @@ set default_extensions=avi,asf,wmv,wma,flv,mkv,mpg,mpeg,ts,mp4,nuv,ogm,mov,mts,m
 net session >nul 2>&1
 if not %errorLevel% == 0 echo   & echo Error: Must run as administrator. & pause>nul & goto :eof
 
-:: ask extensions
+:hintextensions
 echo.
-echo example: mp4,avi,mkv (lowercase, divide by comma, no dots)
-echo or just press enter for default
+echo Please enter file extensions to remove, for example: mp4,avi,mkv (lowercase, divide by comma, no dots), or just press enter for remove ALL
 echo.
+:askextensions
 set /p extensions="What extensions to delete for (default ALL): "
 if not "!extensions!"=="" (
 	set "extensions=!extensions: =!"

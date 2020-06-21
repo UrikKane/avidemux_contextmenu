@@ -8,14 +8,43 @@ if not %errorLevel% == 0 echo   & echo Error: Must run as administrator. & paus
 
 :: find installation path
 cd /d %programfiles%
-for /f "tokens=*" %%F in ('dir /b /a:d /o:-n ^|find /i "avidemux"') do (
-	if exist "%%~F\avidemux.exe" (
-	set "installpath=%programfiles%\%%~F"
-	echo Found Avidemux folder %programfiles%\%%~F
-	goto :SetKeys
+set foundcount=0
+for /f "tokens=*" %%F in ('dir /b /a:d /o:-n ^|find /i "avidemux"') do (	
+	for %%A in (avidemux.exe,avidemux_portable.exe) do (
+		if exist "%%~F\%%A" (
+		set /a foundcount=!foundcount!+1
+		echo Found Avidemux: %programfiles%\%%~F\%%A
+		set "foundpath!foundcount!=%programfiles%\%%~F\%%A"		
+		)
 	)
 )
-echo Error: Could not find installation folder. & pause>nul & goto :eof
+if !foundcount!==0 echo Error: Could not find installation folder. & pause>nul & goto :eof
+if !foundcount!==1 (
+	set "installpath=%foundpath1%"
+	goto :SetKeys
+)
+FOR /L %%F IN (1,1,%foundcount%) DO ( if ""!folderidlist!=="" ( set folderidlist=%%F) else ( set folderidlist=!folderidlist!,%%F))
+
+:AskFolder
+echo.
+echo please choose folder ^( !folderidlist! ^)
+FOR /L %%F IN (1,1,%foundcount%) DO ( echo  %%F     !foundpath%%F!)
+
+echo.
+set folderid=
+set /p folderid="enter number    = "
+
+if not "!folderid!"=="" (
+	set "folderid=!folderid: =!"
+	for /f "delims=1234567890" %%A in ('echo !folderid!') do echo ERROR: !folderid! - only numbers are allowed^^! & goto :AskFolder
+	for %%A in (%folderidlist%) do if "!folderid!"=="%%A" (	
+		set "installpath=!foundpath%%A!"
+		echo. & echo Selected folder: !installpath!
+		goto :hintextensions
+	)
+	echo ERROR: !folderid! is NOT a valid option^^!
+)
+goto :AskFolder
 
 :SetKeys
 set regkey="HKCR\Applications\avidemux.exe\shell\open\command"
