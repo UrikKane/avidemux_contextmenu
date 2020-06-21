@@ -6,7 +6,7 @@ add_open_in_avidemux_win64.bat to add "Open in Avidemux" option.
 If want to remove, use remove_open_in_avidemux_win64.bat
 
 
-add_open_in_avidemux_win64.bat - finds avidemux folders in C:\Program Files and lets you choose which one of them to add as "open in Avidemux" context menu entry for given extensions (asks user input for extensions, or uses default list)
+add_open_in_avidemux_win64 - finds avidemux folders in C:\Program Files and lets you choose which one of them to add as "open in Avidemux" context menu entry for given extensions (asks user input for extensions, or uses default list)
 
 add_open_in_avidemux_win64_manual - same, but with manual folder input for portable and custom installations
 
