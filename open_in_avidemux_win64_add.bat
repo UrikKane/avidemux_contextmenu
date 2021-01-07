@@ -68,7 +68,7 @@ echo  & echo Error^: Could not find installation in provided folder. & echo. & 
 
 :hintextensions
 echo.
-echo Please enter file extensions to remove, divided by comma, lowercase, no dots or just press enter for default list
+echo Please enter file extensions to add, divided by comma, lowercase, no dots or just press enter for default list
 echo.
 :askextensions
 set /p extensions="What extensions to add for (default %default_extensions%): "
