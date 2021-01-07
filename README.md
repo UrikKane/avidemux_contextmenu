@@ -1,20 +1,22 @@
 # avidemux_contextmenu
 avidemux context menu scripts
 
-TL;DR: if you have regular Avidemux version installed to C:\Program files , use 
-add_open_in_avidemux_win64.bat to add "Open in Avidemux" option.
-If want to remove, use remove_open_in_avidemux_win64.bat
+Basically, there are two pairs of scripts (with _add and _remove suffixes):
 
+"open_in" - adds custom entry in context menu that is quickly accessible
+"open_with" - modifies/updates registry key for the standard Windows Explorer "Open with" submenu
 
-add_open_in_avidemux_win64 - finds avidemux folders in C:\Program Files and lets you choose which one of them to add as "open in Avidemux" context menu entry for given extensions (asks user input for extensions, or uses default list)
+Both scripts search for avidemux.exe and avidemux_portable.exe as proof-of-installation.
+All files must be run elevated (right click >"Run as administrator"). It's required for script to be able to make changes in registry.
 
-add_open_in_avidemux_win64_manual - same, but with manual folder input for portable and custom installations
+Description:
 
-remove_open_in_avidemux_win64 - removes "open in avidemux" entries
+open_in_avidemux_win64_add.bat - Adds "Open in Avidemux" entries. Searches for Avidemux installations in C:\Program Files  (folders with "avidemux" in their name) and also in the same folder the script is placed. If multiple installations found, will ask which one to choose. It can also accept full manual path entry (from user input). Before adding entries, asks for which file extensions to add for.
 
-fix_avidemux_location_registry_win64 - finds avidemux folders in C:\Program Files and lets you choose which one of them to use for "Open With..." option in context menu entry, by writing to registry HKCR\Applications\avidemux.exe\shell\open\command
+open_in_avidemux_win64_remove.bat - Removes previously added "Open in Avidemux" entries.
 
-open_avidemux_location_registry_win64 - opens regedit at HKCR\Applications\avidemux.exe\shell\open\command
+open_with_avidemux_registry_win64_add - Adds/Updates registry entry for "Open with" submenu. Function-wise, works similar to as open_in_avidemux_win64_add.bat
 
+open_with_avidemux_registry_win64_remove - Deletes registry entry for "Open with" submenu
 
-made and tested for Win10 64bit
+Made and tested in Win10 64bit.
